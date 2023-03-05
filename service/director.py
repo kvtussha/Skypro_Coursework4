@@ -18,8 +18,7 @@ class DirectorService:
         return self.director_schema.dump(self.dao.create(director_d))
 
     def update(self, director_d):
-        self.dao.update(director_d)
-        return self.dao
+        return self.dao.update(director_d)
 
     def delete(self, rid):
         self.dao.delete(rid)

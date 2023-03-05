@@ -1,12 +1,12 @@
 import jwt
-from flask import request, abort
+from flask import abort, request
 
 from constants import JWT_ALGORITHM, JWT_SECRET
 
 
 def auth_required(func):
     def wrapper(*args, **kwargs):
-        if 'Authorisation' not in request.header():
+        if 'Authorisation' not in request.headers:
             abort(401)
         data = request.headers['Authorisation']
         token = data.split(' Bearer')[-1]
@@ -16,14 +16,14 @@ def auth_required(func):
             print('decode error')
             abort(401)
 
-        return func
+        return func()
 
-    return wrapper()
+    return wrapper
 
 
 def admin_required(func):
     def wrapper(*args, **kwargs):
-        if 'Authorisation' not in request.header():
+        if 'Authorisation' not in request.headers:
             abort(401)
         data = request.headers['Authorisation']
         token = data.split(' Bearer')[-1]
@@ -36,6 +36,6 @@ def admin_required(func):
             print('decode error')
             abort(401)
 
-        return func
+        return func()
 
-    return wrapper()
+    return wrapper
