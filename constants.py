@@ -1,0 +1,5 @@
+PWD_HASH_SALT = b'masha svintsova'
+PWD_HASH_ITERATIONS = 100_000
+JWT_SECRET = "Masha Svintsova"
+JWT_ALGORITHM = "HS256"
+HASH_STR = "sha256"
