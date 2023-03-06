@@ -92,3 +92,9 @@ Content-Type: application/json
 ###
 
 DELETE http://127.0.0.1:10001/movies/21
+
+###
+
+GET http://127.0.0.1:5000/users/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtvbHlhIiwicm9sZSI6InVzZXIiLCJleHAiOjE2ODkzMzk0MDF9.X8WlLrCG_eKHKBfMFXmf4kXP6T9XMI1A-kSeEsg80ts

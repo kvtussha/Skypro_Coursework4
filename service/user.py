@@ -20,12 +20,14 @@ class UserService:
         return self.dao.get_by_name(username)
 
     def create(self, user_d):
+        user_d["password"] = self.generate_password(user_d["password"])
         return self.dao.create(user_d)
 
     def update(self, user_d):
+        user_d["password"] = self.generate_password(user_d["password"])
         return self.dao.update(user_d)
 
-    def generate_password(password):
+    def generate_password(self, password):
         hash_digest = hashlib.pbkdf2_hmac(
             HASH_STR,
             password.encode('utf-8'),
@@ -34,7 +36,7 @@ class UserService:
         )
         return base64.b64encode(hash_digest)
 
-    def compare_password(password_hash, other_password):
+    def compare_password(self, password_hash, other_password):
         decoded = base64.b64decode(password_hash)
         hash_digest = hashlib.pbkdf2_hmac(
             HASH_STR,

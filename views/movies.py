@@ -18,7 +18,7 @@ class MoviesView(Resource):
         all_movies = movie_service.get_all(director=director, genre=genre, year=year)
         return MovieSchema(many=True).dump(all_movies), 200
 
-    @auth_required
+    @admin_required
     def post(self):
         req_json = request.json
         movie = movie_service.create(req_json)

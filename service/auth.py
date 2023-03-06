@@ -1,7 +1,7 @@
 import calendar
 import datetime
 
-import jwt as jwt
+import jwt
 
 from flask_restx import abort
 
@@ -14,13 +14,14 @@ class AuthService:
     def __init__(self, user_service:  UserService):
         self.user_service = user_service
 
-    def generate_token(self, username, password):
+    def generate_token(self, username, password, is_refresh=False):
         user = self.user_service.get_by_name(username)
         if not user:
-            abort(400)
+            abort(404)
 
-        if not self.user_service.compare_password(user.password, password):
-            abort(400)
+        if not  is_refresh:
+            if not self.user_service.compare_password(user.password, password):
+                abort(400)
 
         data = {
             'username': user.username,

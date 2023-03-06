@@ -2,8 +2,6 @@ import jwt
 from flask import request
 from flask_restx import Resource, Namespace
 
-import service.auth
-from constants import JWT_SECRET, JWT_ALGORITHM
 from implemented import auth_service
 
 auth_ns = Namespace('auth')
@@ -21,16 +19,9 @@ class AuthView(Resource):
         tokens = auth_service.generate_token(username, password)
         return tokens, 201
 
-
-@auth_ns.route('/<int:bid>')
-class AuthView(Resource):
-
     def put(self):
         req_json = request.json
         token = req_json.get('refresh_token')
         tokens = auth_service.refresh_token(token)
-        return tokens, 201
-
-
-
+        return tokens, 204
 
