@@ -7,19 +7,20 @@ from implemented import director_service
 
 director_ns = Namespace('directors')
 
+director_schema = DirectorSchema()
+directors_schema = DirectorSchema(many=True)
+
 
 @director_ns.route('/')
 class DirectorsView(Resource):
     @auth_required
     def get(self):
-        rs = director_service.get_all()
-        res = DirectorSchema(many=True).dump(rs)
-        return res, 200
-
+        directors = director_service.get_all()
+        return directors_schema.dump(directors), 200
     @admin_required
     def post(self):
         req_json = request.json
-        director = director_service.create(req_json)
+        director_service.create(req_json)
         return "", 201
 
 

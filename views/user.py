@@ -18,7 +18,7 @@ class UsersView(Resource):
 
     def post(self):
         req_json = request.json
-        user = user_service.create(req_json)
+        user_service.create(req_json)
         return "", 201
 
 

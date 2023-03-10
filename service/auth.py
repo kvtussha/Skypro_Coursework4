@@ -5,7 +5,7 @@ import jwt
 
 from flask_restx import abort
 
-from constants import PWD_HASH_SALT, JWT_ALGORITHM
+from constants import PWD_HASH_SALT, JWT_ALGORITHM, JWT_SECRET
 from service.user import UserService
 
 
@@ -19,7 +19,7 @@ class AuthService:
         if not user:
             abort(404)
 
-        if not  is_refresh:
+        if not is_refresh:
             if not self.user_service.compare_password(user.password, password):
                 abort(400)
 
@@ -30,18 +30,22 @@ class AuthService:
 
         min30 = datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
         data["exp"] = calendar.timegm(min30.timetuple())
-        access_token = jwt.encode(data, PWD_HASH_SALT, algorithm=JWT_ALGORITHM)
+        access_token = jwt.encode(data, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
         min30 = datetime.datetime.utcnow() + datetime.timedelta(days=130)
         data["exp"] = calendar.timegm(min30.timetuple())
-        refresh_token = jwt.encode(data, PWD_HASH_SALT, algorithm=JWT_ALGORITHM)
+        refresh_token = jwt.encode(data, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
         return {'access_token': access_token, 'refresh_token': refresh_token}
 
 
     def refresh_token(self, refresh_token):
         try:
-            info = jwt.decode(refresh_token, PWD_HASH_SALT, algorithms=[JWT_ALGORITHM])
+            info = jwt.decode(
+                refresh_token,
+                JWT_SECRET,
+                algorithms=[JWT_ALGORITHM]
+            )
             username = info.get('username')
         except Exception as e:
             return False

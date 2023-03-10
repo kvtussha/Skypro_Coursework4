@@ -12,10 +12,10 @@ class GenreService:
         return self.genre_schema.dump(self.dao.get_one(gid))
 
     def get_all(self):
-        return self.genres_schema.dump(self.dao.get_all())
+        return self.dao.get_all()
 
     def create(self, genre_d):
-        return self.genre_schema.dump(self.dao.create(genre_d))
+        return self.dao.create(genre_d)
 
     def update(self, genre_d):
         return self.dao.update(genre_d)
