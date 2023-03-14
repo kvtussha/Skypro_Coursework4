@@ -5,6 +5,7 @@ from service.director import DirectorService
 
 import pytest
 
+
 @pytest.fixture()
 def director_dao():
     director_dao = DirectorDAO(None)
@@ -13,13 +14,14 @@ def director_dao():
     david = Director(id=2, name='David Fincher')
     ridley = Director(id=3, name='Ridley Scott')
 
-    director_dao.get_all = MagicMock(return_=[steven, david, ridley])
-    director_dao.get_one = MagicMock(return_=david)
-    director_dao.create = MagicMock(return_=Director(id=3))
+    director_dao.get_all = MagicMock(return_value=[steven, david, ridley])
+    director_dao.get_one = MagicMock(return_value=david)
+    director_dao.create = MagicMock(return_value=Director(id=3))
     director_dao.update = MagicMock()
     director_dao.delete = MagicMock()
 
     return director_dao
+
 
 class TestDirectorService:
     @pytest.fixture(autouse=True)
@@ -33,7 +35,7 @@ class TestDirectorService:
 
     def test_get_all(self):
         directors = self.director_service.get_all()
-        assert  len(directors) > 0
+        assert len(directors) > 0
 
     def test_create(self):
         new_director = {
@@ -51,16 +53,3 @@ class TestDirectorService:
             "name": 'Maria Svintsova'
         }
         self.director_service.update(new_director)
-
-
-
-
-    
-
-
-
-
-
-
-
-

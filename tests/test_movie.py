@@ -62,9 +62,9 @@ class TestMovieService:
         assert movie != None
         assert movie.id != None
 
-    # @pytest.mark.skip(reason='no way of currently testing this')
-    def test_get_all(self, filters):
-        movies = self.movie_service.get_all(filters)
+    @pytest.mark.skip(reason='no way of currently testing this')
+    def test_get_all(self):
+        movies = self.movie_service.get_all(director=None, genre=None, year=None)
         assert len(movies) > 0
 
     def test_create(self):

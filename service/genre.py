@@ -9,7 +9,7 @@ class GenreService:
         self.genre_schema = GenreSchema()
 
     def get_one(self, gid):
-        return self.genre_schema.dump(self.dao.get_one(gid))
+        return self.dao.get_one(gid)
 
     def get_all(self):
         return self.dao.get_all()

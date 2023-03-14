@@ -8,19 +8,19 @@ import pytest
 
 @pytest.fixture()
 def genre_dao():
-    genre_dao = GenreDAO(None)
+    t_genre_dao = GenreDAO(None)
 
     cartoon = Genre(id=1, name='cartoon')
     horror = Genre(id=2, name='horror')
     anime = Genre(id=3, name='anime')
 
-    genre_dao.get_all = MagicMock(return_=[cartoon, horror, anime])
-    genre_dao.get_one = MagicMock(return_=horror)
-    genre_dao.create = MagicMock(return_=Genre(id=3))
-    genre_dao.update = MagicMock()
-    genre_dao.delete = MagicMock()
+    t_genre_dao.get_all = MagicMock(return_value=[cartoon, horror, anime])
+    t_genre_dao.get_one = MagicMock(return_value=horror)
+    t_genre_dao.create = MagicMock(return_value=Genre(id=3))
+    t_genre_dao.update = MagicMock()
+    t_genre_dao.delete = MagicMock()
 
-    return genre_dao
+    return t_genre_dao
 
 
 class TestGenreService:
@@ -39,7 +39,7 @@ class TestGenreService:
 
     def test_create(self):
         new_director = {
-            "name": 'triller'
+            "name": 'thriller'
         }
         genre = self.genre_service.create(new_director)
         assert genre.id != None
