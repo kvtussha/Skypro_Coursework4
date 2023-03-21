@@ -16,14 +16,14 @@ class MoviesView(Resource):
         page = request.args.get("page")
         director = request.args.get("director_id")
         genre = request.args.get("genre_id")
-        year = request.args.get("year")
-        all_movies = movie_service.get_all(director=director, genre=genre, year=year, status=status, page=page)
+        d_year = request.args.get("year")
+        all_movies = movie_service.get_all(director=director, genre=genre, d_year=d_year, status=status, page=page)
         return MovieSchema(many=True).dump(all_movies), 200
 
     @admin_required
     def post(self):
         req_json = request.json
-        movie = movie_service.create(req_json)
+        movie_service.create(req_json)
         return "", 201
 
 

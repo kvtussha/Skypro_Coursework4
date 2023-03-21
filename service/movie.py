@@ -1,4 +1,5 @@
 from flask import request
+from sqlalchemy import desc
 
 from dao.model.movie import Movie, MovieSchema
 from dao.movie import MovieDAO
@@ -11,16 +12,20 @@ class MovieService:
         self.movies_schema = MovieSchema(many=True)
         self.movie_schema = MovieSchema()
 
-    def get_all(self, genre, director, year):
+    def get_all(self, genre, director, d_year, status, page):
 
         movies = Movie.query
         if director:
             movies = movies.filter(Movie.director_id == director)
         elif genre:
             movies = movies.filter(Movie.genre_id == genre)
-        elif year:
-            movies = movies.filter(Movie.year == year)
+        elif d_year:
+            movies = movies.filter(Movie.year == d_year)
 
+        if page:
+            movies = movies.limit(12).offset((int(page) - 1) * 12)
+        if status == 'new':
+            movies = self.dao.get_by_status()
         return self.dao.get_all(movies)
 
     def get_one(self, mid):

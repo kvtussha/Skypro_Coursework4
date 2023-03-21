@@ -18,6 +18,9 @@ class MovieDAO:
 
         return movies
 
+    def get_by_status(self):
+        return self.session.query(Movie).order_by(Movie.year)
+
     def update(self, movie):
 
         self.session.add(movie)

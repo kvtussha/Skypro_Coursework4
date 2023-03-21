@@ -14,8 +14,8 @@ class AuthService:
     def __init__(self, user_service:  UserService):
         self.user_service = user_service
 
-    def generate_token(self, username, password, is_refresh=False):
-        user = self.user_service.get_by_name(username)
+    def generate_token(self, email, password, is_refresh=False):
+        user = self.user_service.get_by_email(email)
         if not user:
             abort(404)
 
@@ -24,8 +24,10 @@ class AuthService:
                 abort(400)
 
         data = {
-            'username': user.username,
-            'role': user.role
+            'email' : user.email,
+            'name': user.name,
+            'surname': user.surname,
+            'favourite_genre': user.favourite_genre
         }
 
         min30 = datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
@@ -46,10 +48,10 @@ class AuthService:
                 JWT_SECRET,
                 algorithms=[JWT_ALGORITHM]
             )
-            username = info.get('username')
+            email = info.get('email')
         except Exception as e:
             return False
 
         if info:
-            return self.generate_token(username, None, is_refresh=True)
+            return self.generate_token(email, None, is_refresh=True)
 

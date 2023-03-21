@@ -12,8 +12,8 @@ class UserDAO:
     def get_one(self, uid):
         return self.session.query(User).get(uid)
 
-    def get_by_name(self, username):
-        return self.session.query(User).filter(User.username == username).one_or_none()
+    def get_by_email(self, email):
+        return self.session.query(User).filter(User.email == email).first()
 
     def create(self, data):
         users = User(**data)

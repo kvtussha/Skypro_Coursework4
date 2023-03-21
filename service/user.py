@@ -16,8 +16,8 @@ class UserService:
     def get_one(self, bid):
         return self.dao.get_one(bid)
 
-    def get_by_name(self, username):
-        return self.dao.get_by_name(username)
+    def get_by_email(self, email):
+        return self.dao.get_by_email(email)
 
     def create(self, user_d):
         user_d["password"] = self.generate_password(user_d["password"])
@@ -26,6 +26,25 @@ class UserService:
     def update(self, user_d):
         user_d["password"] = self.generate_password(user_d["password"])
         return self.dao.update(user_d)
+
+    def update_partial(self, data, uid):
+        user = self.get_one(uid)
+        if "email" in data:
+            user.email = data.get("email")
+        if "name" in data:
+            user.name = data.get("name")
+        if "surname" in data:
+            user.surname = data.get("surname")
+        if "favourite_genre" in data:
+            user.favourite_genre = data.get("favourite_genre")
+        self.dao.update(user)
+
+    def update_password(self, data, uid):
+        user = self.get_one(uid)
+        if self.compare_password(user.password, data.get('old_password')):
+            data["new_password"] = self.generate_password(data["new_password"])
+            user.password = data["new_password"]
+            self.dao.update(user)
 
     def generate_password(self, password):
         hash_digest = hashlib.pbkdf2_hmac(
